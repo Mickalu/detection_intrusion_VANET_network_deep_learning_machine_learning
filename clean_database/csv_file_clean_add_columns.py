@@ -4,11 +4,11 @@ from os import listdir
 from os.path import isfile, join
 from sklearn.preprocessing import LabelEncoder
 
-list_day = ["01", "02"]
+list_day = ["01","02","03","04","05","06","07","08","09","10","11","12"]
 
 for nbr_day in list_day:
 
-    PATH_DIR_DATA = "D:/School/cours_5eme/projet/database/Kyoto2016/2015/"+ nbr_day +"/csv_file/"
+    PATH_DIR_DATA = "D:/School/cours_5eme/projet/code/database/Kyoto2016/2015/"+ nbr_day +"/csv_file/"
 
     data_folder_csv = [f for f in listdir(PATH_DIR_DATA) if isfile(join(PATH_DIR_DATA, f))]
 
@@ -42,7 +42,7 @@ for nbr_day in list_day:
             df_clean[column] = df_clean[column].astype('category')
             df_clean[column] = df_clean[column].cat.codes
 
-        df_clean.to_csv( "D:/School/cours_5eme/projet/database/Kyoto2016/2015/"+ nbr_day +"/csv_file_clean/" +file)
+        df_clean.to_csv( "D:/School/cours_5eme/projet/code/database/Kyoto2016/2015/"+ nbr_day +"/csv_file_clean/2_" + file)
             
         
     
