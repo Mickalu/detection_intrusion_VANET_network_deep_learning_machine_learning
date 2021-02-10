@@ -14,3 +14,4 @@ for file in all_folder_json:
 df_result = pd.concat(list_df_json_concat)
 
 df_result.to_csv("F:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/CSV_file/0_3_1_01_concatenate.csv")
+

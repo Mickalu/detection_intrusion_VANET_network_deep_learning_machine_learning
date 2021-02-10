@@ -4,7 +4,11 @@ import pandas as pd
 import numpy as np
 
 PATH = "F:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi"
-df_csv = pd.read_csv(PATH + "/database/csv_file/0_3_1_01_concatenate.csv")
+folder_type_database = "/database/csv_file/"
+name_file = "0_3_1_01_concatenate.csv"
+
+df_csv = pd.read_csv(PATH + folder_type_database + name_file)
+
 
 # delete type 2
 
@@ -46,16 +50,20 @@ for col in list_name_column_str_to_list_float:
         df_csv_delete_type_2[name_df_new_col] = list_element_index
 
 
+## Split columns noise in columns
 
 
-list_name_colonne_split = ["noise"]
+# print(df_csv_delete_type_2["noise"])
+# list_name_colonne_split = ["noise"]
 
 # for col in list_name_colonne_split:
 #     list_element = df_csv_delete_type_2[col]
-
+    
 #     del df_csv_delete_type_2[col]
 
 #     row, column_index = np.shape(list_element)
+
+    
 
 #     for i in range(column_index):
 #         name_df_new_col = col + "_" + str(i)
@@ -64,13 +72,19 @@ list_name_colonne_split = ["noise"]
 
 #         df_csv_delete_type_2[name_df_new_col] = list_element_index
 
-print(df_csv_delete_type_2["noise"])
+# print(df_csv_delete_type_2["noise_1"])
 
-# # Ajout colonne pour le nom du récepteur
 
-# liste_number = file_name.split('-')
 
-# parametre_dataset = PATH.split('_')
-# colum_attack_type = [parametre_dataset[3]] * np.shape(df_csv_delete_type_2)[0]
 
-# df_csv_delete_type_2['type_attack'] = colum_attack_type
+## Ajout colonne type d'attaque
+
+
+parametre_dataset = name_file.split('_')
+colum_attack_type = [int(parametre_dataset[3])] * np.shape(df_csv_delete_type_2)[0]
+
+df_csv_delete_type_2['type_attack'] = colum_attack_type
+
+
+#save result
+df_csv_delete_type_2.to_csv(PATH + folder_type_database + "clean_data/" + name_file)
