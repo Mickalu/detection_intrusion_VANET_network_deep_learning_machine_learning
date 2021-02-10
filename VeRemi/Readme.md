@@ -24,3 +24,24 @@ dataBase folder contane csv folder for csv files and json folder for json files.
 ### Deep Learning
 * ANN
 * LSTM
+
+
+
+# Add new data
+- Use this URL to find new data
+
+     https://github.com/VeReMi-dataset/VeReMi/blob/master/index.md
+
+- Dowload data 
+
+- Use this Unix command for extract data 
+
+        tar -xzf filename.tgz
+
+- create a folder with carateristic on the folder name (Number on the column link by '_')
+
+- Open folder and find result folder
+- Copy all files except GroundTrus file
+- past all they files on the folder created before
+
+
