@@ -67,11 +67,11 @@ for col in list_name_column_str_to_list_float:
 ## Ajout colonne type d'attaque
 
 
-parametre_dataset = name_file.split('_')
+parametre_dataset = name_file_data.split('_')
 colum_attack_type = [int(parametre_dataset[3])] * np.shape(df_csv_delete_type_2)[0]
 
 df_csv_delete_type_2['type_attack'] = colum_attack_type
 
 
 #save result
-df_csv_delete_type_2.to_csv(PATH+ folder_data+ "csv_file/clean_data/" + name_file+".csv")
+df_csv_delete_type_2.to_csv(PATH+ folder_data+ "csv_file/clean_data/" + name_file_data+".csv")

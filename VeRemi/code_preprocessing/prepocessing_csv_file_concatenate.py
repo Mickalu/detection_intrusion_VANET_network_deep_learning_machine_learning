@@ -2,17 +2,18 @@ import pandas as pd
 # import seaborn as sns
 # from seaborn import *
 import numpy as np
+import settings
 
-PATH = "E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi"
 folder_type_database = "/database/csv_file/data_with_noise/"
 name_file = "0_3_8_01_concatenate.csv"
 
-df_csv = pd.read_csv(PATH + folder_type_database + name_file)
+df_csv = pd.read_csv(settings.PATH_folder + folder_type_database + name_file)
 
 
 # delete type 2
 
 df_csv_delete_type_2 = df_csv[df_csv['type'] != 2]
+df_without_noise = df_csv_delete_type_2.drop(["noise","pos_noise", "spd_noise"], axis = 1)
 
 
 # Séparer les colonnes str sous forme de liste et ensuite sous forme de colonne
@@ -31,10 +32,10 @@ def convert_column_str_to_float(column_trans):
 
 
 
+## delete columns
 
-df_without_noise = df_csv_delete_type_2.drop([["noise"], ["pos_noise"]], axis = 1)
 
-list_name_column_str_to_list_float = ["pos","spd","spd_noise"]#"noise"
+list_name_column_str_to_list_float = ["pos","spd"]#"noise"
 
 for col in list_name_column_str_to_list_float:
     
@@ -61,4 +62,4 @@ df_without_noise['type_attack'] = colum_attack_type
 
 
 #save result
-df_without_noise.to_csv("E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/csv_file/data_without_noise/data_clean/" + name_file)
+df_without_noise.to_csv("E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/csv_file/data_without_noise/data_clean/test_" + name_file)
