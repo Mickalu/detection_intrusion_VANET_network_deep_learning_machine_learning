@@ -5,7 +5,7 @@ import numpy as np
 import settings
 
 folder_type_database = "/database/csv_file/data_with_noise/"
-name_file = "0_3_8_01_concatenate.csv"
+name_file = "0_3_2_01_concatenate.csv"
 
 df_csv = pd.read_csv(settings.PATH_folder + folder_type_database + name_file)
 
@@ -62,4 +62,4 @@ df_without_noise['type_attack'] = colum_attack_type
 
 
 #save result
-df_without_noise.to_csv("E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/csv_file/data_without_noise/data_clean/test_" + name_file)
+df_without_noise.to_csv(settings.PATH_folder + "/database/csv_file/data_without_noise/data_clean/" + name_file)
