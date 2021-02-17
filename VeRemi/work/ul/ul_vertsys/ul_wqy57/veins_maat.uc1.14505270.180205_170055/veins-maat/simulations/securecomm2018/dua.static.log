@@ -1,0 +1,22 @@
+***Starting server on port 34886 ***
+Loading net-file from 'lust.net.xml'... done (1154ms).
+Loading additional-files from 'vtypes.add.xml'... done (2ms).
+Loading additional-files from 'busstops.add.xml'... done (6ms).
+Loading additional-files from 'e1detectors.add.xml'... done (73ms).
+Loading additional-files from 'lust.poly.xml'... done (606ms).
+Loading additional-files from 'tll.static.xml'... done (28ms).
+Loading done.
+Simulation started with time: 0.00
+Simulation ended at time: 10900.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 205013ms
+ Real time factor: 53.1678
+ UPS: 92330.403438
+Vehicles: 
+ Inserted: 4145 (Loaded: 4214)
+ Running: 240
+ Waiting: 0
+
+DijkstraRouterTT answered 5581 queries and explored 1634.28 edges on average.
+DijkstraRouterTT spent 3605ms answering queries (0.65ms on average).

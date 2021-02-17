@@ -1,0 +1,25 @@
+***Starting server on port 50751 ***
+Loading net-file from 'lust.net.xml'... done (1055ms).
+Loading additional-files from 'vtypes.add.xml'... done (2ms).
+Loading additional-files from 'busstops.add.xml'... done (6ms).
+Loading additional-files from 'e1detectors.add.xml'... done (66ms).
+Loading additional-files from 'lust.poly.xml'... done (546ms).
+Loading additional-files from 'tll.static.xml'... done (21ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'AVL---_23_3'; waited too long (wrong lane), lane='--32674#9_1', time=17554.60.
+Warning: Vehicle 'AVL---_23_3' ends teleporting on edge '--31180#1', time 17554.60.
+Simulation ended at time: 18100.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 739922ms
+ Real time factor: 24.4622
+ UPS: 65736.481683
+Vehicles: 
+ Inserted: 10292 (Loaded: 10538)
+ Running: 770
+ Waiting: 3
+Teleports: 1 (Wrong Lane: 1)
+
+DijkstraRouterTT answered 14029 queries and explored 1694.20 edges on average.
+DijkstraRouterTT spent 8742ms answering queries (0.62ms on average).

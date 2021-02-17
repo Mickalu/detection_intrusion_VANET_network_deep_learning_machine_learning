@@ -1,0 +1,31 @@
+***Starting server on port 35116 ***
+Loading net-file from 'lust.net.xml'... done (1123ms).
+Loading additional-files from 'vtypes.add.xml'... done (1ms).
+Loading additional-files from 'busstops.add.xml'... done (7ms).
+Loading additional-files from 'e1detectors.add.xml'... done (71ms).
+Loading additional-files from 'lust.poly.xml'... done (573ms).
+Loading additional-files from 'tll.static.xml'... done (21ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'h33129c1:1'; collision with vehicle 'AVL---_18_4', lane='-30762#1_0', gap=-5.93, time=18016.00 stage=insertion.
+Warning: Vehicle 'h33129c1:1' ends teleporting on edge '--31452#0', time 18016.00.
+Warning: Teleporting vehicle 'carIn8935:1'; collision with vehicle 'AVL---_18_10', lane='-30762#1_0', gap=-5.43, time=23416.00 stage=insertion.
+Warning: Vehicle 'carIn8935:1' ends teleporting on edge '--31452#0', time 23416.00.
+Warning: Teleporting vehicle 'carIn40599:1'; collision with vehicle 'AVL---_18_12', lane='-30762#1_0', gap=-5.93, time=25216.00 stage=insertion.
+Warning: Vehicle 'carIn40599:1' ends teleporting on edge '--31452#0', time 25216.00.
+Warning: Vehicle 'h50485c1:1' performs emergency stop at the end of lane '--30892#2_1' because there is no connection to the next edge (decel=-9.59, offset = 0.07), time=25297.60.
+Simulation ended at time: 25300.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 8974718ms
+ Real time factor: 2.81904
+ UPS: 21603.773288
+Vehicles: 
+ Inserted: 34363 (Loaded: 34450)
+ Running: 3900
+ Waiting: 7
+Teleports: 3 (Collisions: 3)
+Emergency Stops: 1
+
+DijkstraRouterTT answered 55261 queries and explored 1908.74 edges on average.
+DijkstraRouterTT spent 34347ms answering queries (0.62ms on average).

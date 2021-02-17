@@ -1,0 +1,25 @@
+***Starting server on port 36015 ***
+Loading net-file from 'lust.net.xml'... done (1170ms).
+Loading additional-files from 'vtypes.add.xml'... done (1ms).
+Loading additional-files from 'busstops.add.xml'... done (7ms).
+Loading additional-files from 'e1detectors.add.xml'... done (67ms).
+Loading additional-files from 'lust.poly.xml'... done (585ms).
+Loading additional-files from 'tll.static.xml'... done (40ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'h33129c1:1'; collision with vehicle 'AVL---_18_4', lane='-30762#1_0', gap=-5.93, time=18016.00 stage=insertion.
+Warning: Vehicle 'h33129c1:1' ends teleporting on edge '--31452#0', time 18016.00.
+Simulation ended at time: 18100.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 709331ms
+ Real time factor: 25.5171
+ UPS: 68207.107824
+Vehicles: 
+ Inserted: 10292 (Loaded: 10538)
+ Running: 760
+ Waiting: 3
+Teleports: 1 (Collisions: 1)
+
+DijkstraRouterTT answered 14083 queries and explored 1679.66 edges on average.
+DijkstraRouterTT spent 8135ms answering queries (0.58ms on average).

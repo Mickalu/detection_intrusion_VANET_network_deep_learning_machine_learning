@@ -1,0 +1,31 @@
+***Starting server on port 34599 ***
+Loading net-file from 'lust.net.xml'... done (1296ms).
+Loading additional-files from 'vtypes.add.xml'... done (2ms).
+Loading additional-files from 'busstops.add.xml'... done (7ms).
+Loading additional-files from 'e1detectors.add.xml'... done (109ms).
+Loading additional-files from 'lust.poly.xml'... done (627ms).
+Loading additional-files from 'tll.static.xml'... done (27ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'AVL---_18_7'; collision with vehicle 'AVL---_1_6', lane=':-21184_1_0', gap=-1.27, time=21129.70 stage=move.
+Warning: Vehicle 'AVL---_18_7' ends teleporting on edge '-30528#19', time 21129.90.
+Warning: Teleporting vehicle 'carIn17186:1'; collision with vehicle 'AVL---_18_8', lane='-30762#1_0', gap=-6.93, time=21616.00 stage=insertion.
+Warning: Vehicle 'carIn17186:1' ends teleporting on edge '--31452#0', time 21616.00.
+Warning: Teleporting vehicle 'carIn37102:1'; collision with vehicle 'AVL---_18_10', lane='-30762#1_0', gap=-5.93, time=23416.00 stage=insertion.
+Warning: Vehicle 'carIn37102:1' ends teleporting on edge '--31452#0', time 23416.00.
+Warning: Teleporting vehicle 'h69878c1:1'; collision with vehicle 'AVL---_20_13', lane='--31890_0', gap=-7.39, time=25206.00 stage=insertion.
+Warning: Vehicle 'h69878c1:1' ends teleporting on edge '-32410#1', time 25206.10.
+Simulation ended at time: 25300.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 10010647ms
+ Real time factor: 2.52732
+ UPS: 19424.818795
+Vehicles: 
+ Inserted: 34362 (Loaded: 34450)
+ Running: 3856
+ Waiting: 8
+Teleports: 4 (Collisions: 4)
+
+DijkstraRouterTT answered 55240 queries and explored 1913.89 edges on average.
+DijkstraRouterTT spent 40131ms answering queries (0.73ms on average).

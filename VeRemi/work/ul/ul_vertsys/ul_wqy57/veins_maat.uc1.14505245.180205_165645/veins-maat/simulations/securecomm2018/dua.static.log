@@ -1,0 +1,39 @@
+***Starting server on port 54188 ***
+Loading net-file from 'lust.net.xml'... done (1104ms).
+Loading additional-files from 'vtypes.add.xml'... done (4ms).
+Loading additional-files from 'busstops.add.xml'... done (6ms).
+Loading additional-files from 'e1detectors.add.xml'... done (70ms).
+Loading additional-files from 'lust.poly.xml'... done (582ms).
+Loading additional-files from 'tll.static.xml'... done (21ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'carIn10451:1'; collision with vehicle 'AVL---_18_8', lane='-30762#1_0', gap=-5.93, time=21616.00 stage=insertion.
+Warning: Vehicle 'carIn10451:1' ends teleporting on edge '--31452#0', time 21616.00.
+Warning: Teleporting vehicle 'CBBS___BuS_1_9'; collision with vehicle 'h52505c1:1', lane='--30358#4_0', gap=-2.51, time=21823.00 stage=insertion.
+Warning: Vehicle 'CBBS___BuS_1_9' ends teleporting on edge '--30358#3', time 21823.00.
+Warning: Teleporting vehicle 'carIn48429:1'; collision with vehicle 'AVL---_20_11', lane='--31890_0', gap=-7.39, time=23405.90 stage=insertion.
+Warning: Vehicle 'carIn48429:1' ends teleporting on edge '-32410#1', time 23405.90.
+Warning: Teleporting vehicle 'carIn25349:1'; collision with vehicle 'AVL---_20_11', lane='--31890_0', gap=-0.89, time=23406.00 stage=events.
+Warning: Vehicle 'carIn25349:1' ends teleporting on edge '-32410#1', time 23408.00.
+Warning: Teleporting vehicle 'carIn33684:1'; collision with vehicle 'AVL---_18_10', lane='-30762#1_0', gap=-5.93, time=23416.00 stage=insertion.
+Warning: Vehicle 'carIn33684:1' ends teleporting on edge '--31452#0', time 23416.00.
+Warning: Teleporting vehicle 'h3786c1:1'; collision with vehicle 'AVL---_20_13', lane='--31890_0', gap=-7.39, time=25208.00 stage=insertion.
+Warning: Vehicle 'h3786c1:1' ends teleporting on edge '-32410#1', time 25208.00.
+Warning: Teleporting vehicle 'h33128c1:1'; collision with vehicle 'AVL---_18_12', lane='-30762#1_0', gap=-5.93, time=25224.00 stage=insertion.
+Warning: Vehicle 'h33128c1:1' ends teleporting on edge '--31452#0', time 25224.00.
+Warning: Teleporting vehicle 'carIn9139:1'; waited too long (jam), lane=':-15072_1_0', time=25276.60.
+Warning: Vehicle 'carIn9139:1' ends teleporting on edge '-31492#1', time 25276.60.
+Simulation ended at time: 25300.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 8836199ms
+ Real time factor: 2.86323
+ UPS: 21986.352842
+Vehicles: 
+ Inserted: 34363 (Loaded: 34450)
+ Running: 3910
+ Waiting: 7
+Teleports: 8 (Collisions: 7, Jam: 1)
+
+DijkstraRouterTT answered 55333 queries and explored 1916.64 edges on average.
+DijkstraRouterTT spent 37099ms answering queries (0.67ms on average).

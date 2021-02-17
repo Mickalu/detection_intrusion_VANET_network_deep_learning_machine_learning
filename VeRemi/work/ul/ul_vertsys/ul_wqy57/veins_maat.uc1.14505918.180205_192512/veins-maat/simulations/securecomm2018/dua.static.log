@@ -1,0 +1,35 @@
+***Starting server on port 59465 ***
+Loading net-file from 'lust.net.xml'... done (1159ms).
+Loading additional-files from 'vtypes.add.xml'... done (2ms).
+Loading additional-files from 'busstops.add.xml'... done (6ms).
+Loading additional-files from 'e1detectors.add.xml'... done (68ms).
+Loading additional-files from 'lust.poly.xml'... done (555ms).
+Loading additional-files from 'tll.static.xml'... done (21ms).
+Loading done.
+Simulation started with time: 0.00
+Warning: Teleporting vehicle 'carIn30954:1'; collision with vehicle 'AVL---_20_7', lane='--31890_0', gap=-7.39, time=19805.00 stage=insertion.
+Warning: Vehicle 'carIn30954:1' ends teleporting on edge '-32410#1', time 19805.00.
+Warning: Teleporting vehicle 'carIn17186:1'; collision with vehicle 'AVL---_18_8', lane='-30762#1_0', gap=-6.93, time=21616.00 stage=insertion.
+Warning: Vehicle 'carIn17186:1' ends teleporting on edge '--31452#0', time 21616.00.
+Warning: Teleporting vehicle 'h13818c1:1'; collision with vehicle 'AVL---_20_11', lane='--31890_0', gap=-7.39, time=23406.30 stage=insertion.
+Warning: Vehicle 'h13818c1:1' ends teleporting on edge '-32410#1', time 23406.30.
+Warning: Teleporting vehicle 'h4084c1:1'; collision with vehicle 'AVL---_20_11', lane='--31890_0', gap=-1.39, time=23406.40 stage=events.
+Warning: Vehicle 'h4084c1:1' ends teleporting on edge '-32410#1', time 23406.90.
+Warning: Teleporting vehicle 'carIn32411:1'; collision with vehicle 'AVL---_20_13', lane='--31890_0', gap=-7.39, time=25207.20 stage=insertion.
+Warning: Vehicle 'carIn32411:1' ends teleporting on edge '-32410#1', time 25207.20.
+Warning: Teleporting vehicle 'h33128c1:1'; collision with vehicle 'AVL---_18_12', lane='-30762#1_0', gap=-5.93, time=25216.00 stage=insertion.
+Warning: Vehicle 'h33128c1:1' ends teleporting on edge '--31452#0', time 25216.00.
+Simulation ended at time: 25300.10
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 9622895ms
+ Real time factor: 2.62916
+ UPS: 20197.890552
+Vehicles: 
+ Inserted: 34363 (Loaded: 34450)
+ Running: 3846
+ Waiting: 7
+Teleports: 6 (Collisions: 6)
+
+DijkstraRouterTT answered 55672 queries and explored 1913.77 edges on average.
+DijkstraRouterTT spent 36789ms answering queries (0.66ms on average).
