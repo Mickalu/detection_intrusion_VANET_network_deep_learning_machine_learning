@@ -45,3 +45,7 @@ dataBase folder contane csv folder for csv files and json folder for json files.
 - past all they files on the folder created before
 
 
+# Concatenate json file to csv
+Change the path value on mypath variable and on the save file name at the end 
+
+
