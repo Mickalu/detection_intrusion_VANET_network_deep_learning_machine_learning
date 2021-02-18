@@ -67,12 +67,12 @@ df_without_noise['type_attack'] = colum_attack_type
 list_pos = []
 for i in df_without_noise.index:
     list_pos.append(sqrt(df_without_noise['pos_0'][i] ** 2 + df_without_noise['pos_1'][i] ** 2 + df_without_noise['pos_2'][i] ** 2))
-df_without_noise['pos'] = list_pos
+df_without_noise['global_pos'] = list_pos
 
 list_speed = []
 for i in df_without_noise.index:
     list_speed.append(sqrt(df_without_noise['spd_0'][i] ** 2 + df_without_noise['spd_1'][i] ** 2 + df_without_noise['spd_2'][i] ** 2))
-df_without_noise['speed'] = list_speed
+df_without_noise['global_speed'] = list_speed
 
 #save result
 df_without_noise.to_csv("E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/csv_file/data_without_noise/data_clean/test_" + name_file)
