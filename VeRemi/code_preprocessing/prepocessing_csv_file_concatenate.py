@@ -2,17 +2,20 @@ import pandas as pd
 # import seaborn as sns
 # from seaborn import *
 import numpy as np
+import settings
+from math import sqrt
 
-PATH = "F:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi"
-folder_type_database = "/database/csv_file/"
-name_file = "0_3_1_01_concatenate.csv"
+folder_type_database = "/database/csv_file/data_with_noise/"
+name_file = "0_3_8_01_concatenate.csv"
 
-df_csv = pd.read_csv(PATH + folder_type_database + name_file)
+df_csv = pd.read_csv(settings.PATH_folder + folder_type_database + name_file)
 
 
 # delete type 2
 
 df_csv_delete_type_2 = df_csv[df_csv['type'] != 2]
+df_without_noise = df_csv_delete_type_2.drop(["noise","pos_noise", "spd_noise"], axis = 1)
+
 
 # Séparer les colonnes str sous forme de liste et ensuite sous forme de colonne
 
@@ -30,15 +33,16 @@ def convert_column_str_to_float(column_trans):
 
 
 
+## delete columns
 
 
-list_name_column_str_to_list_float = ["pos","spd","spd_noise","pos_noise"]#"noise"
+list_name_column_str_to_list_float = ["pos","spd"]#"noise"
 
 for col in list_name_column_str_to_list_float:
     
-    list_element = convert_column_str_to_float(df_csv_delete_type_2[col])
+    list_element = convert_column_str_to_float(df_without_noise[col])
 
-    del df_csv_delete_type_2[col]
+    del df_without_noise[col]
 
     row, column_index = np.shape(list_element)
 
@@ -47,44 +51,28 @@ for col in list_name_column_str_to_list_float:
         list_element_index = []
         list_element_index = [item[i] for item in list_element]
 
-        df_csv_delete_type_2[name_df_new_col] = list_element_index
-
-
-## Split columns noise in columns
-
-
-# print(df_csv_delete_type_2["noise"])
-# list_name_colonne_split = ["noise"]
-
-# for col in list_name_colonne_split:
-#     list_element = df_csv_delete_type_2[col]
-    
-#     del df_csv_delete_type_2[col]
-
-#     row, column_index = np.shape(list_element)
-
-    
-
-#     for i in range(column_index):
-#         name_df_new_col = col + "_" + str(i)
-#         list_element_index = []
-#         list_element_index = [item[i] for item in list_element]
-
-#         df_csv_delete_type_2[name_df_new_col] = list_element_index
-
-# print(df_csv_delete_type_2["noise_1"])
-
-
+        df_without_noise[name_df_new_col] = list_element_index
 
 
 ## Ajout colonne type d'attaque
 
-
 parametre_dataset = name_file.split('_')
-colum_attack_type = [int(parametre_dataset[3])] * np.shape(df_csv_delete_type_2)[0]
+colum_attack_type = [int(parametre_dataset[3])] * np.shape(df_without_noise)[0]
 
-df_csv_delete_type_2['type_attack'] = colum_attack_type
+df_without_noise['type_attack'] = colum_attack_type
 
+
+## Ajout colonne pos et speed (général)
+
+list_pos = []
+for i in df_without_noise.index:
+    list_pos.append(sqrt(df_without_noise['pos_0'][i] ** 2 + df_without_noise['pos_1'][i] ** 2 + df_without_noise['pos_2'][i] ** 2))
+df_without_noise['global_pos'] = list_pos
+
+list_speed = []
+for i in df_without_noise.index:
+    list_speed.append(sqrt(df_without_noise['spd_0'][i] ** 2 + df_without_noise['spd_1'][i] ** 2 + df_without_noise['spd_2'][i] ** 2))
+df_without_noise['global_speed'] = list_speed
 
 #save result
-df_csv_delete_type_2.to_csv(PATH + folder_type_database + "clean_data/" + name_file)
+df_without_noise.to_csv("E:/programmation/projet_5eme/detection_intrusion_VANET_network_deep_learning_machine_learning/VeRemi/database/csv_file/data_without_noise/data_clean/test_" + name_file)
