@@ -2,8 +2,8 @@ import pandas as pd
 from function_PCA import *
 
 
-df = pd.read_csv("D:/School/cours_5eme/projet/code/VeRemi/last_VeReMi/database/cleandataVeReMi.csv")
-liste_number_component = [2,3,4]
+df = pd.read_csv("D:/School/cours_5eme/projet/code/VeRemi/last_VeReMi/database/cleandataVeReMi_final.csv")
+liste_number_component = [2,3,4,5,6]
 historys = []
 matrixs = []
 
