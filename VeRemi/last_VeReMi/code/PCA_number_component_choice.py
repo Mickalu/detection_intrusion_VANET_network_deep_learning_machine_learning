@@ -2,7 +2,7 @@ import pandas as pd
 from function_PCA import *
 count = 0
 
-df = pd.read_csv("D:/School/cours_5eme/projet/code/VeRemi/last_VeReMi/database/cleandataVeReMi_final.csv")
+df = pd.read_csv("D:/School/cours_5eme/projet/code/VeRemi/last_VeReMi/database/cleandataVeReMi_final_undersampling.csv")
 liste_number_component = [2,3,4,5,6]
 historys = []
 matrixs = []
