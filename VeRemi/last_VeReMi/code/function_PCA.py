@@ -73,3 +73,7 @@ def confusion_matrix_pca(Y_predicted, Y_test):
     Y_predicted = (Y_predicted > 0.5) 
     matrix = confusion_matrix(Y_test.values.argmax(axis=1),Y_predicted.argmax(axis=1))
     return matrix 
+
+def delete_column_df(df, list_col_supp):
+    df = df.drop(list_col_supp, axis=1)
+    return df

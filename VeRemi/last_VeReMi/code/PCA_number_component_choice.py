@@ -6,7 +6,9 @@ df = pd.read_csv("D:/School/cours_5eme/projet/code/VeRemi/last_VeReMi/database/c
 liste_number_component = [2,3,4,5,6]
 historys = []
 matrixs = []
+list_col_supp = ['type', 'pos_z', 'spd_z']
 
+df = delete_column_df(df, list_col_supp)
 
 for number in liste_number_component:
     history, matrix = value_pca_acc(df, number)
