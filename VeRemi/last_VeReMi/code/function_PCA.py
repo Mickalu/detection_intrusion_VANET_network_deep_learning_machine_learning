@@ -37,7 +37,7 @@ def loss_graph(historys,liste_number_component):
 
     plt.show()
 
-def value_pca_acc(df, n_component_pca):
+def value_pca_acc(df, n_component_pca, activation_function):
     X = df.drop(['attackerType'], axis = 1)
     Y = df['attackerType']
     Y = pd.get_dummies(Y, columns=['attackerType'])
@@ -52,11 +52,10 @@ def value_pca_acc(df, n_component_pca):
     X_test_pca = pca.transform(X_test)
 
 
-
     model=Sequential()
 
-    model.add(Dense(64, input_shape=(n_component_pca,), activation='relu'))
-    model.add(Dense(32, activation='relu',))
+    model.add(Dense(64, input_shape=(n_component_pca,), activation=activation_function))
+    model.add(Dense(32, activation=activation_function,))
     model.add(Dense(6, activation='softmax'))
 
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -66,13 +65,14 @@ def value_pca_acc(df, n_component_pca):
 
     Y_predicted = model.predict(X_test_pca)
     matrix = confusion_matrix_pca(Y_predicted, Y_test)
+
     return history, matrix
 
 def confusion_matrix_pca(Y_predicted, Y_test):
-    
     Y_predicted = (Y_predicted > 0.5) 
     matrix = confusion_matrix(Y_test.values.argmax(axis=1),Y_predicted.argmax(axis=1))
     return matrix 
+
 
 def delete_column_df(df, list_col_supp):
     df = df.drop(list_col_supp, axis=1)
