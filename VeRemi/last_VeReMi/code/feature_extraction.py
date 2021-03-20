@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report,confusion_matrix, f1_score
 from imblearn.under_sampling import RandomUnderSampler
+from sklearn.preprocessing import MinMaxScaler
 
 ## Get PATH
 path = os.getcwd()
@@ -47,8 +48,39 @@ df_under = pd.concat([X_under,y_under], axis=1)
 df_under.to_csv(database_dir_path + "cleandataVeReMi_final_undersampling.csv")
 
 
+## Open undersampling csv file
+df = pd.read_csv(database_dir_path + "cleandataVeReMi_final_undersampling.csv")
+df.drop("Unnamed: 0", axis=1, inplace=True)
 
-df1 = pd.read_csv(database_dir_path + "cleandataVeReMi_final_undersampling.csv")
+## Feature Selection
+df.drop(["type", "pos_z", "spd_z"], axis=1, inplace=True)
+
+## Print correlation matrix
+plt.figure(figsize = (16,10))
+corrMatrix = df.corr()
+ax = sns.heatmap(corrMatrix, annot=True)
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+plt.show()
+
+## Create X and y
+X = df.drop("attackerType", axis=1)
+y = df["attackerType"]
+
+## Normalize the data
+df1 = df
+list_columns_to_normalize = ["pos_x", "pos_y", "spd_x", "spd_y", "global_pos", "global_spd"]
+for col in list_columns_to_normalize:
+    scaler = MinMaxScaler()
+    df1[col] = scaler.fit_transform(df1[[col]])
+    
+X1 = df.drop("attackerType", axis=1)
+y1 = df["attackerType"]
+
+
+## Group by
+df_group = df.groupby(by=["sender","receiver","attackerType"], as_index=False).agg({'rcvTime':'mean', 'sendTime':'mean', 'messageID':'first', 'RSSI':'first', 'pos_x':'mean', 'pos_y':'mean', 'pos_z':'mean', 'spd_x':'mean', 'spd_y':'mean',
+       'spd_z':'mean', 'global_pos':'mean', 'global_spd':'mean'})
+
 
 def forest_test(X, Y):
     X_Train, X_Test, Y_Train, Y_Test = train_test_split(X, Y, test_size = 0.30, random_state = 42)
