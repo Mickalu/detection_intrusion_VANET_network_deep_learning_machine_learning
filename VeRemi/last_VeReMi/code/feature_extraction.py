@@ -8,8 +8,12 @@ import seaborn as sns
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from keras.models import Sequential
+from keras.layers import Dense, LSTM, Dropout
 from sklearn.metrics import classification_report,confusion_matrix, f1_score
+from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
+from imblearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
 
 ## Get PATH
@@ -17,16 +21,56 @@ path = os.getcwd()
 database_dir_path = path[:-4].replace(os.sep, "/") + "database/"
 
 ## Open the csv
-df = pd.read_csv(database_dir_path + "cleandataVeReMi_final.csv")
+df = pd.read_csv(database_dir_path + "cleandataVeReMi_with_directory.csv")
 
+## Feature Selection
+df.drop(["type", "messageID", "pos_z", "spd_z"], axis=1, inplace=True)
+
+## Group by
+df_group = df.groupby(by=["sender","receiver","attackerType", "simulation_directory"], 
+                      as_index=False).agg({'rcvTime':'mean', 'sendTime':'mean', 'RSSI':'first', 
+                                           'pos_x':'mean', 'pos_y':'mean', 'spd_x':'mean', 'spd_y':'mean',
+                                           'global_pos':'mean', 'global_spd':'mean'})
+                                           
+## Drop the simulation_directory column
+df_group.drop("simulation_directory", axis=1, inplace=True)
+
+## Rearrange the columns order
+df_group = df_group[['sender', 'receiver', 'rcvTime',
+       'sendTime', 'RSSI', 'pos_x', 'pos_y', 'spd_x', 'spd_y', 'global_pos',
+       'global_spd', 'attackerType']]
+
+## Sampling strategy with SMOTE and RandomUnderSampling
+X_group = df_group.drop("attackerType", axis=1)
+y_group = df_group["attackerType"]
+
+number_strategy_smote = int((y_group.value_counts().max() * 0.5).round())
+
+strategy = {1:number_strategy_smote, 2:number_strategy_smote, 4:number_strategy_smote, 8:number_strategy_smote, 16:number_strategy_smote}
+oversample = SMOTE(sampling_strategy=strategy, random_state=42)
+undersample = RandomUnderSampler(random_state=42)
+
+steps = [("o", oversample), ("u", undersample)]
+pipeline = Pipeline(steps=steps)
+
+X_sample, y_sample = pipeline.fit_resample(X_group,y_group)
+
+## Concatenate the new data
+df_sample = pd.concat([X_sample, y_sample], axis=1)
+
+## Create One Hot Encoding
+df_sample = pd.concat([df_sample,pd.get_dummies(df_sample['attackerType'], prefix='attackerType')],axis=1).drop(['attackerType'],axis=1)
+
+## Normalize the data
+list_columns_to_normalize = ["pos_x", "pos_y", "spd_x", "spd_y", "global_pos", "global_spd"]
+for col in list_columns_to_normalize:
+    scaler = MinMaxScaler()
+    df_sample[col] = scaler.fit_transform(df_sample[[col]])
+                                            
 ## Split features and labels
-X = df.drop(["attackerType"], axis=1)
-y = df["attackerType"]
-
-## Create and fit an undersampling method
-undersample = RandomUnderSampler(sampling_strategy='all', random_state=42)
-X_under, y_under = undersample.fit_resample(X, y)
-
+list_attackerType = ["attackerType_0", "attackerType_1", "attackerType_2", "attackerType_4", "attackerType_8", "attackerType_16"]
+X_sample = df_sample.drop(list_attackerType, axis=1)
+y_sample = df_sample[list_attackerType]
 
 ## Plot to see the repartition of labels
 plt.figure(figsize=(10,6))
@@ -36,25 +80,6 @@ plt.ylabel("\n", fontsize=15, color='#2980b9')
 plt.title("Repartition of attacker type before under sampling\n", fontsize=18, color='#3742fa')
 plt.tight_layout()
 
-plt.figure(figsize=(10,6))
-sns.barplot(x=y_under.unique(), y=y_under.value_counts().sort_index(), palette="Blues_r")
-plt.xlabel('\nAttacker Type', fontsize=15, color='#2980b9')
-plt.ylabel("\n", fontsize=15, color='#2980b9')
-plt.title("Repartition of attacker type after under sampling\n", fontsize=18, color='#3742fa')
-plt.tight_layout()
-
-## Concat and save in a new csv file the undersampling
-df_under = pd.concat([X_under,y_under], axis=1)
-df_under.to_csv(database_dir_path + "cleandataVeReMi_final_undersampling.csv")
-
-
-## Open undersampling csv file
-df = pd.read_csv(database_dir_path + "cleandataVeReMi_final_undersampling.csv")
-df.drop("Unnamed: 0", axis=1, inplace=True)
-
-## Feature Selection
-df.drop(["type", "pos_z", "spd_z"], axis=1, inplace=True)
-
 ## Print correlation matrix
 plt.figure(figsize = (16,10))
 corrMatrix = df.corr()
@@ -62,24 +87,30 @@ ax = sns.heatmap(corrMatrix, annot=True)
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 plt.show()
 
-## Create X and y
-X = df.drop("attackerType", axis=1)
-y = df["attackerType"]
 
-## Normalize the data
-df1 = df
-list_columns_to_normalize = ["pos_x", "pos_y", "spd_x", "spd_y", "global_pos", "global_spd"]
-for col in list_columns_to_normalize:
-    scaler = MinMaxScaler()
-    df1[col] = scaler.fit_transform(df1[[col]])
+def lstm_model(X,y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.25, random_state = 42)
+    lstm_model = Sequential()
+
+    lstm_model.add(Dense(64, input_shape=(X.shape[1],)))
+    lstm_model.add(Dense(32))
+    # lstm_model.add(LSTM(units = 50, return_sequences = True, input_shape = 11))
+    # lstm_model.add(Dropout(0.2))
+
+    # lstm_model.add(LSTM(units = 50))
+    # lstm_model.add(Dropout(0.2))
+
+    lstm_model.add(Dense(units = 6, activation='softmax'))
+
+    lstm_model.compile(loss='binary_crossentropy', optimizer = 'adam', metrics = ['accuracy'])
+
+    lstm_model.fit(X_train, y_train, epochs = 10)
     
-X1 = df.drop("attackerType", axis=1)
-y1 = df["attackerType"]
-
-
-## Group by
-df_group = df.groupby(by=["sender","receiver","attackerType"], as_index=False).agg({'rcvTime':'mean', 'sendTime':'mean', 'messageID':'first', 'RSSI':'first', 'pos_x':'mean', 'pos_y':'mean', 'pos_z':'mean', 'spd_x':'mean', 'spd_y':'mean',
-       'spd_z':'mean', 'global_pos':'mean', 'global_spd':'mean'})
+    y_predicted = lstm_model.predict(X_test)
+    y_predicted = y_predicted.round()
+    print(confusion_matrix(y_test.argmax(axis=1), y_predicted.argmax(axis=1)))
+    print(classification_report(y_test.argmax(axis=1), y_predicted.argmax(axis=1)))
+    print(f1_score(y_test.argmax(axis=1), y_predicted.argmax(axis=1), average="macro"))
 
 
 def forest_test(X, Y):
