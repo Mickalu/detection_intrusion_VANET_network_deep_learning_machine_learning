@@ -58,10 +58,10 @@ def value_pca_acc(df, n_component_pca, activation_function):
     model.add(Dense(32, activation=activation_function,))
     model.add(Dense(6, activation='softmax'))
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', "AUC"])
 
     
-    history = model.fit(X_train_pca, Y_train, validation_data = (X_test_pca, Y_test), epochs=10)
+    history = model.fit(X_train_pca, Y_train, validation_data = (X_test_pca, Y_test), epochs=10, batch_size=512)
 
     Y_predicted = model.predict(X_test_pca)
     matrix = confusion_matrix_pca(Y_predicted, Y_test)
