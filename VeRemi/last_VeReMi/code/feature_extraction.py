@@ -178,6 +178,19 @@ plt.plot(var)
 """
 ###############################################################################
 
+## Open csv
+df_sample = pd.read_csv("C:/Users/Thomas/Desktop/VeReMi_SMOTE.csv")
+df_sample.drop(["global_pos", "PCA_spd"], axis=1, inplace=True)
+
+## Split features and labels
+X_sample = df_sample.drop("attackerType", axis=1)
+y_sample = df_sample["attackerType"]
+
+## Create One Hot Encoding
+le = LabelEncoder()
+y_le = le.fit_transform(y_sample)
+y_ohe = to_categorical(y_le)
+
 def deep_learning_model_3_layer(X,y,test_size,first_layer,second_layer,third_layer,hidden_activation,output_activation,epochs):
 
     ## Train-Test split
@@ -269,8 +282,7 @@ def deep_learning_model_4_layer(X,y,test_size,first_layer,second_layer,third_lay
     return [confusion_matrix_model, classification_report_model, accuracy_score_model, 
             f1_score_model, test_size, first_layer, second_layer, third_layer, fourth_layer, 
             hidden_activation, output_activation, epochs]
-    
-first, second, third = [12,13,14]
+
 
 ## Loop to test ANN model
 test_size_list = [0.2, 0.25, 0.3]
