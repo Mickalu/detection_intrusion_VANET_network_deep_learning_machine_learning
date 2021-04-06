@@ -98,10 +98,10 @@ def deep_learning_model_lstm(X,y,epochs):
     ## Deep Learning model
     model_lstm = Sequential()
 
-    model_lstm.add(LSTM(units=n_comps, return_sequences=True,
+    model_lstm.add(LSTM(units=n_comps, return_sequences=False,
                input_shape=(X_train.shape[1], 1),
                dropout=0.2, recurrent_dropout=0.2))
-    model_lstm.add(LSTM(64, dropout=0.2, recurrent_dropout=0.2))
+    model_lstm.add(Dense(64, activation="relu"))
     model_lstm.add(Dense(32, activation="relu"))
     model_lstm.add(Dense(6, activation="softmax"))
 
@@ -133,12 +133,13 @@ def deep_learning_model_lstm(X,y,epochs):
 test_size_list = [0.2, 0.25, 0.3]
 hidden_activation_list = ["relu", "tanh"]
 output_activation_list = ["softmax", "sigmoid"]
+hidden_layer_list_2 = [[256,128]]
 hidden_layer_list_3 = [[64,32,16], [128,64,32], [256,128,64], [512,256,128]]
-hidden_layer_list_4 = [[]]
+hidden_layer_list_4 = [[256,128,64,32]]
 
 results = []
 
-for n in range(3,10,1):
+for n in range(2,10,1):
     pca = PCA(n_components=n, random_state=42)
     X_pca = pca.fit_transform(X_sample)
     result = deep_learning_model_3_layer(X_pca,y_ohe,0.2,128,
