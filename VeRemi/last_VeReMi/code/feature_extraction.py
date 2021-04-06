@@ -12,8 +12,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from imblearn.over_sampling import SMOTE
-from imblearn.under_sampling import RandomUnderSampler
-from imblearn.pipeline import Pipeline
 from sklearn.decomposition import PCA
 
 ###############################################################################
@@ -131,7 +129,8 @@ covar_matrix = PCA(n_components = 12)
 ## Calculate eigenvalues 
 covar_matrix.fit(X_sample) 
 variance = covar_matrix.explained_variance_ratio_ #calculate variance ratios 
-var=np.cumsum(np.round(covar_matrix.explained_variance_ratio_,decimals=3)*100) #cumulative sum of explained variance with 12 features
+var=np.cumsum(np.round(covar_matrix.explained_variance_ratio_,decimals=3)*100) 
+#cumulative sum of explained variance with 12 features
 
 plt.ylabel('% Variance Explained') 
 plt.xlabel('# of Features') 
