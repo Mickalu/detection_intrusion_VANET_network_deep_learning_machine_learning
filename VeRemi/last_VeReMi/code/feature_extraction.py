@@ -14,17 +14,7 @@ import seaborn as sns
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.decomposition import PCA
-
-from sklearn.preprocessing import LabelEncoder
-from keras.utils import to_categorical
-
-from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
-
 
 ###############################################################################
 """
@@ -61,8 +51,8 @@ plt.tight_layout()
 df.drop("simulation_directory", axis=1, inplace=True)
 
 ## PCA
-X_pos = df[["pos_x", "pos_y"]]
-X_spd = df[["spd_x", "spd_y"]]
+X_pos = df[["sender", "receiver", "sendTime", "rcvTime", "pos_x", "pos_y"]]
+X_spd = df[["sender", "receiver", "sendTime", "rcvTime", "spd_x", "spd_y"]]
 
 pca_pos = PCA(n_components=1)
 X_pca_pos = pca_pos.fit_transform(X_pos)
@@ -93,7 +83,6 @@ y = df["attackerType"]
 oversample = SMOTE(random_state=42)
 X_sample, y_sample = oversample.fit_resample(X,y)
 
-
 ## Concatenate the new data
 df_sample = pd.concat([X_sample, y_sample], axis=1)
 
@@ -105,12 +94,6 @@ plt.xlabel('\nAttacker Type', fontsize=15, color='#2980b9')
 plt.ylabel("\n", fontsize=15, color='#2980b9')
 plt.title("Repartition of attacker type after sampling\n", fontsize=18, color='#3742fa')
 plt.tight_layout()
-
-## Normalize the data
-list_columns_to_normalize = ["pos_x", "pos_y", "spd_x", "spd_y", "global_pos", "global_spd"]
-for col in list_columns_to_normalize:
-    scaler = MinMaxScaler()
-    X_sample[col] = scaler.fit_transform(X_sample[[col]])
 
 ## Rearrange the columns order
 df_sample = df_sample[['sender', 'receiver', 'sendTime', 'rcvTime', 'messageID', 'RSSI', 'pos_x', 
@@ -127,19 +110,7 @@ plt.show()
 ## Save in a csv file                          
 df_sample.to_csv(database_dir_path + "VeReMi_SMOTE.csv", index=False)
 
-## Open csv
-df_sample = pd.read_csv("C:/Users/Thomas/Desktop/VeReMi_SMOTE.csv")
-df_sample.drop(["global_pos", "PCA_spd"], axis=1, inplace=True)
 
-## Split features and labels
-X_sample = df_sample.drop("attackerType", axis=1)
-# [["sender", "receiver", "sendTime", "rcvTime", "messageID", "RSSI", "PCA_pos", "PCA_spd"]]
-y_sample = df_sample["attackerType"]
-
-## Create One Hot Encoding
-le = LabelEncoder()
-y_le = le.fit_transform(y_sample)
-y_ohe = to_categorical(y_le)
    
 ## Variance with a global PCA to see how n_components to choose
 pca = PCA(n_components=12)
@@ -154,174 +125,17 @@ plt.yscale("log")
 plt.title("PCA Analysis")
 plt.show()
 
-#Créer une matrice de covariance 
-covar_matrix = PCA(n_components = 12) #vous avez 14 features 
+## Create a covariance matrix
+covar_matrix = PCA(n_components = 12) 
 
-#Calculer les valeurs propres 
+## Calculate eigenvalues 
 covar_matrix.fit(X_sample) 
 variance = covar_matrix.explained_variance_ratio_ #calculate variance ratios 
-var=np.cumsum(np.round(covar_matrix.explained_variance_ratio_,decimals=3)*100) 
-var #somme cumulative de variance expliquée avec [n] features 
+var=np.cumsum(np.round(covar_matrix.explained_variance_ratio_,decimals=3)*100) #cumulative sum of explained variance with 12 features
 
-#afficher sur une courbe 
 plt.ylabel('% Variance Explained') 
 plt.xlabel('# of Features') 
 plt.title('PCA Analysis') 
 plt.ylim(99.6,100.2) 
 plt.style.context('seaborn-whitegrid')
 plt.plot(var)
-
-
-###############################################################################
-"""
-                            TEST FOR THE MODEL
-"""
-###############################################################################
-
-## Open csv
-df_sample = pd.read_csv("C:/Users/Thomas/Desktop/VeReMi_SMOTE.csv")
-df_sample.drop(["global_pos", "PCA_spd"], axis=1, inplace=True)
-
-## Split features and labels
-X_sample = df_sample.drop("attackerType", axis=1)
-y_sample = df_sample["attackerType"]
-
-## Create One Hot Encoding
-le = LabelEncoder()
-y_le = le.fit_transform(y_sample)
-y_ohe = to_categorical(y_le)
-
-def deep_learning_model_3_layer(X,y,test_size,first_layer,second_layer,third_layer,hidden_activation,output_activation,epochs):
-
-    ## Train-Test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, 
-                                                    test_size = test_size, 
-                                                    random_state = 42)
-
-    ## Deep Learning model
-    model = Sequential()
-
-    model.add(Dense(first_layer, input_shape=(X.shape[1],), activation=hidden_activation))
-    model.add(Dense(second_layer, activation=hidden_activation))
-    model.add(Dense(third_layer, activation=hidden_activation))
-    model.add(Dense(6, activation=output_activation))
-
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-    model.fit(X_train, y_train, epochs=epochs, batch_size=8192)
-
-    ## Prediction and metrics
-    y_pred = model.predict_classes(X_test)
-    y_pred = le.inverse_transform(y_pred)
-
-    y_test = np.argmax(y_test, axis=1)
-    y_test = le.inverse_transform(y_test)
-
-    confusion_matrix_model = confusion_matrix(y_test, y_pred)
-    classification_report_model = classification_report(y_test, y_pred)
-    accuracy_score_model = accuracy_score(y_test, y_pred)
-    f1_score_model = f1_score(y_test, y_pred, average="macro")
-    print(confusion_matrix_model)
-    print(classification_report_model)
-    print("Accuracy score :", accuracy_score_model)
-    print("F1 score (macro) :", f1_score_model)
-    print("Test size :", test_size)
-    print("First layer :", first_layer)
-    print("Second layer :", second_layer)
-    print("Third layer :", third_layer)
-    print("Activation function hidden layer :", hidden_activation)
-    print("Activation function output layer :", output_activation)
-    print("Epochs :", epochs)
-    return [confusion_matrix_model, classification_report_model, accuracy_score_model, 
-            f1_score_model, test_size, first_layer, second_layer, third_layer, hidden_activation, 
-            output_activation, epochs]
- 
-def deep_learning_model_4_layer(X,y,test_size,first_layer,second_layer,third_layer,fourth_layer,hidden_activation,output_activation,epochs):
-
-    ## Train-Test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, 
-                                                    test_size = test_size, 
-                                                    random_state = 42)
-
-    ## Deep Learning model
-    model = Sequential()
-
-    model.add(Dense(first_layer, input_shape=(X.shape[1],), activation=hidden_activation))
-    model.add(Dense(second_layer, activation=hidden_activation))
-    model.add(Dense(third_layer, activation=hidden_activation))
-    model.add(Dense(fourth_layer, activation=hidden_activation))
-    model.add(Dense(6, activation=output_activation))
-
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-    model.fit(X_train, y_train, epochs=epochs, batch_size=8192)
-
-    ## Prediction and metrics
-    y_pred = model.predict_classes(X_test)
-    y_pred = le.inverse_transform(y_pred)
-
-    y_test = np.argmax(y_test, axis=1)
-    y_test = le.inverse_transform(y_test)
-
-    confusion_matrix_model = confusion_matrix(y_test, y_pred)
-    classification_report_model = classification_report(y_test, y_pred)
-    accuracy_score_model = accuracy_score(y_test, y_pred)
-    f1_score_model = f1_score(y_test, y_pred, average="macro")
-    print(confusion_matrix_model)
-    print(classification_report_model)
-    print("Accuracy score :", accuracy_score_model)
-    print("F1 score (macro) :", f1_score_model)
-    print("Test size :", test_size)
-    print("First layer :", first_layer)
-    print("Second layer :", second_layer)
-    print("Third layer :", third_layer)
-    print("Fourth layer :", fourth_layer)
-    print("Activation function hidden layer :", hidden_activation)
-    print("Activation function output layer :", output_activation)
-    print("Epochs :", epochs)
-    return [confusion_matrix_model, classification_report_model, accuracy_score_model, 
-            f1_score_model, test_size, first_layer, second_layer, third_layer, fourth_layer, 
-            hidden_activation, output_activation, epochs]
-
-
-## Loop to test ANN model
-test_size_list = [0.2, 0.25, 0.3]
-hidden_activation_list = ["relu", "tanh"]
-output_activation_list = ["softmax", "sigmoid"]
-hidden_layer_list_3 = [[64,32,16], [128,64,32], [256,128,64], [512,256,128]]
-hidden_layer_list_4 = [[]]
-
-results = []
-
-## For 3 layers
-for test_size in test_size_list:
-    for n in range(2,10,1):
-        pca = PCA(n_components=n, random_state=42)
-        X_pca = pca.fit_transform(X_sample)
-        for hidden_layer in hidden_layer_list_3:
-            first_layer, second_layer, third_layer = hidden_layer
-            for hidden_activation in hidden_activation_list:
-                for output_activation in output_activation_list:
-                    result = deep_learning_model_3_layer(X_pca,y_ohe,test_size,first_layer,
-                                                second_layer,third_layer,hidden_activation,
-                                                output_activation,100)
-                    result.append(n)
-                    results.append(result)
-                    print("PCA n_components :", n)
-              
-
-## For 4 layers
-for test_size in test_size_list:
-    for n in range(2,10,1):
-        pca = PCA(n_components=n, random_state=42)
-        X_pca = pca.fit_transform(X_sample)
-        for hidden_layer in hidden_layer_list_4:
-            first_layer, second_layer, third_layer, fourth_layer = hidden_layer
-            for hidden_activation in hidden_activation_list:
-                for output_activation in output_activation_list:
-                    result = deep_learning_model_4_layer(X_pca,y_ohe,test_size,first_layer,
-                                                second_layer,third_layer,fourth_layer,hidden_activation,
-                                                output_activation,100)
-                    result.append(n)
-                    results.append(result)
-                    print("PCA n_components :", n)
