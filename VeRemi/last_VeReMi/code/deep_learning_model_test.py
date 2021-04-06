@@ -98,11 +98,12 @@ def deep_learning_model_lstm(X,y,epochs):
     ## Deep Learning model
     model_lstm = Sequential()
 
-    model_lstm.add(LSTM(units=n_comps, return_sequences=False,
+    model_lstm.add(LSTM(units=n_comps, return_sequences=True,
                input_shape=(X_train.shape[1], 1),
                dropout=0.2, recurrent_dropout=0.2))
-    model_lstm.add(Dense(64, activation="relu"))
-    model_lstm.add(Dense(32, activation="relu"))
+    model_lstm.add(LSTM(64, return_sequence=True, dropout=0.2, 
+                        recurrent_dropout=0.2))
+    model_lstm.add(Dense(32, activation="tanh"))
     model_lstm.add(Dense(6, activation="softmax"))
 
     model_lstm.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -120,7 +121,7 @@ def deep_learning_model_lstm(X,y,epochs):
     classification_report_model = classification_report(y_test, y_pred)
     accuracy_score_model = accuracy_score(y_test, y_pred)
     f1_score_model = f1_score(y_test, y_pred, average="macro")
-    
+
     print(confusion_matrix_model)
     print(classification_report_model)
     print("Accuracy score :", accuracy_score_model)
@@ -156,6 +157,7 @@ plt.plot(x_components,y_components)
 plt.xlabel("Number of components")
 plt.ylabel("Accuracy")
 plt.show()
+
 
 pca = PCA(n_components=7, random_state=42)
 X_pca = pca.fit_transform(X_sample)
